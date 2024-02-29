@@ -1,0 +1,6 @@
+@TalentOnboardingBackend_HostAddress = http://localhost:5102
+
+GET {{TalentOnboardingBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
