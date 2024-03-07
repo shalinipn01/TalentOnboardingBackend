@@ -23,8 +23,8 @@ namespace TalentOnboardingBackend.Controllers
 
         //GET
         [HttpGet("/GetSales")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [Produces(typeof(IEnumerable<Sale>))]
+        [ProducesResponseType(typeof(IEnumerable<SalesViewModel>), StatusCodes.Status200OK)]
+        [Produces("application/json")]
         public async Task<IActionResult> SalesIndex()
         {
             var sales = await _salesService.GetAllSales();
@@ -33,9 +33,9 @@ namespace TalentOnboardingBackend.Controllers
 
         //GET sales details my id
         [HttpGet("/GetSalesDetails")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SalesViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Produces(typeof(Sale))]
+        [Produces("application/json")]
         public async Task<IActionResult> SalesDetails(int? id)
         {
             if (id == null || _context.Sales == null)
@@ -48,9 +48,9 @@ namespace TalentOnboardingBackend.Controllers
 
         //POST create sales
         [HttpPost("/CreateSales")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SalesViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Produces(typeof(Sale))]
+        [Produces("application/json")]
         public async Task<IActionResult> CreateSales([FromBody] SalesRequest salesRequest)
         {
             if (!ModelState.IsValid)
@@ -64,10 +64,10 @@ namespace TalentOnboardingBackend.Controllers
 
         //PUT edit sales
         [HttpPut("/EditSales")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SalesViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Produces(typeof(Sale))]
+        [Produces("application/json")]
         public async Task<IActionResult> EditSales(int id,
             [FromBody] EditSalesRequest salesRequest)
         {
@@ -86,15 +86,14 @@ namespace TalentOnboardingBackend.Controllers
 
         //DELETE sales
         [HttpDelete("/DeleteSales")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Produces(typeof(Sale))]
         public async Task<IActionResult> DeleteSales(int id)
         {
             if (_context.Sales == null)
             {
-                throw new Exception("No Sales found");
+                throw new Exception("No Sales present !");
             }
             await _salesService.DeleteSales(id);
             return Ok("Sales deleted successfully !");

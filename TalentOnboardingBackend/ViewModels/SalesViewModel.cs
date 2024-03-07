@@ -11,7 +11,7 @@ namespace TalentOnboardingBackend.ViewModels
         public int ProductId { get; set; }
         public string StoreName { get; set; }
         public int StoreId { get; set; }
-
+        [DataType(DataType.Date)]
         public String DateSold { get; set; }
     }
 }

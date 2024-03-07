@@ -22,8 +22,8 @@ namespace TalentOnboardingBackend.Controllers
 
         //GET
         [HttpGet("/GetCustomers")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [Produces(typeof(IEnumerable<Customer>))]
+        [ProducesResponseType(typeof(IEnumerable<CustomerViewModel>), StatusCodes.Status200OK)]
+        [Produces("application/json")]
         public async Task<IActionResult> CustomersIndex()
         {
             var customers = await _customerService.GetAllCustomers();
@@ -32,9 +32,9 @@ namespace TalentOnboardingBackend.Controllers
 
         //GET
         [HttpGet("/GetCustomerDetails")]
-       [ProducesResponseType(StatusCodes.Status200OK)]
+       [ProducesResponseType(typeof(CustomerViewModel), StatusCodes.Status200OK)]
        [ProducesResponseType(StatusCodes.Status404NotFound)]
-       [Produces(typeof(Customer))]
+       [Produces("application/json")]
        public async Task<IActionResult> CustomerDetails(int? id)
        {
            if (id == null || _context.Customers == null)
@@ -47,9 +47,9 @@ namespace TalentOnboardingBackend.Controllers
 
        //POST create
        [HttpPost("/CreateCustomer")]
-       [ProducesResponseType(StatusCodes.Status200OK)]
+       [ProducesResponseType(typeof(CustomerViewModel), StatusCodes.Status200OK)]
        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-       [Produces(typeof(Customer))]
+       [Produces("application/json")]
        public async Task<IActionResult> CreateCustomer([FromBody] CustomerRequest customerRequest)
        {
            if (!ModelState.IsValid)
@@ -62,10 +62,10 @@ namespace TalentOnboardingBackend.Controllers
 
        //PUT edit
        [HttpPut("/EditCustomer")]
-       [ProducesResponseType(StatusCodes.Status200OK)]
+       [ProducesResponseType(typeof(CustomerViewModel), StatusCodes.Status200OK)]
        [ProducesResponseType(StatusCodes.Status400BadRequest)]
        [ProducesResponseType(StatusCodes.Status404NotFound)]
-       [Produces(typeof(Customer))]
+       [Produces("application/json")]
        public async Task<IActionResult> EditCustomer(int id, [FromBody] EditCustomerRequest customerRequest)
        {
            if (!ModelState.IsValid || customerRequest == null)
@@ -83,15 +83,14 @@ namespace TalentOnboardingBackend.Controllers
 
        //DELETE customer
        [HttpDelete("/DeleteCustomer")]
-       [ProducesResponseType(StatusCodes.Status200OK)]
+       [ProducesResponseType(typeof(string),StatusCodes.Status200OK)]
        [ProducesResponseType(StatusCodes.Status400BadRequest)]
        [ProducesResponseType(StatusCodes.Status404NotFound)]
-       [Produces(typeof(Customer))]
        public async Task<IActionResult> DeleteCustomer(int id)
        {
            if (_context.Customers == null)
            {
-               throw new Exception("No Customers found");
+               throw new Exception("No Customers present !");
            }
            await _customerService.DeleteCustomer(id);
            return Ok("Customer deleted successfully !");

@@ -22,9 +22,9 @@ namespace TalentOnboardingBackend.Controllers
 
         //GET
         [HttpGet("/GetProducts")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ProductViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Produces(typeof(IEnumerable<Product>))]
+        [Produces("application/json")]
         public async Task<IActionResult> ProductsIndex()
         {
             var products = await _productService.GetAllProducts();
@@ -33,9 +33,9 @@ namespace TalentOnboardingBackend.Controllers
 
         //GET
         [HttpGet("/GetProductDetails")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProductViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Produces(typeof(Product))]
+        [Produces("application/json")]
         public async Task<IActionResult> ProductDetails(int? id)
         {
             if (id == null || _context.Products == null)
@@ -48,9 +48,9 @@ namespace TalentOnboardingBackend.Controllers
 
         //POST create product
         [HttpPost("/CreateProduct")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProductViewModel),StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Produces(typeof(Product))]
+        [Produces("application/json")]
         public async Task<IActionResult> CreateProduct([FromBody] ProductRequest productRequest)
         {
             if (!ModelState.IsValid)
@@ -63,10 +63,10 @@ namespace TalentOnboardingBackend.Controllers
 
         //PUT edit product
         [HttpPut("/EditProduct")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProductViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Produces(typeof(Product))]
+        [Produces("application/json")]
         public async Task<IActionResult> EditProduct(int id, [FromBody] EditProductRequest productRequest)
         {
             if (!ModelState.IsValid || productRequest == null)
@@ -83,15 +83,14 @@ namespace TalentOnboardingBackend.Controllers
 
         //DELETE product
         [HttpDelete("/DeleteProduct")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string),StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Produces(typeof(Product))]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             if (_context.Products == null)
             {
-                throw new Exception("No Products found");
+                throw new Exception("No Products present !");
             }
             await _productService.DeleteProduct(id);
             return Ok("Product deleted successfully !");

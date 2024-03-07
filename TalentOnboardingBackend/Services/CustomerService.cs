@@ -30,7 +30,7 @@ namespace TalentOnboardingBackend.Services
 
             if (customer == null)
             {
-                throw new Exception("Customer not found");
+                throw new Exception("Customer Not Found");
             }
             return _mapper.Map<CustomerViewModel>(customer);
         }
@@ -56,7 +56,7 @@ namespace TalentOnboardingBackend.Services
                 cust.Id == customerRequest.Id);
             if (customer == null)
             {
-                throw new Exception("Cutomer Not Found");
+                throw new Exception("Customer Not Found");
             }
             customer.Name = customerRequest.Name;
             customer.Address = customerRequest.Address;

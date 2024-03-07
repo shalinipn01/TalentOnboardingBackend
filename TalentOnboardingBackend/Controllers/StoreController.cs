@@ -22,8 +22,8 @@ namespace TalentOnboardingBackend.Controllers
 
         //GET
         [HttpGet("/GetStores")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [Produces(typeof(IEnumerable<Store>))]
+        [ProducesResponseType(typeof(IEnumerable<StoreViewModel>), StatusCodes.Status200OK)]
+        [Produces("application/json")]
         public async Task<IActionResult> StoresIndex()
         {
             var stores = await _storeService.GetAllStores();
@@ -32,9 +32,9 @@ namespace TalentOnboardingBackend.Controllers
 
         //GET
         [HttpGet("/GetStoreDetails")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(StoreViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Produces(typeof(Store))]
+        [Produces("application/json")]
         public async Task<IActionResult> StoreDetails(int? id)
         {
             if (id == null || _context.Stores == null)
@@ -47,9 +47,9 @@ namespace TalentOnboardingBackend.Controllers
 
         //POST create store
         [HttpPost("/CreateStore")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(StoreViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Produces(typeof(Store))]
+        [Produces("application/json")]
         public async Task<IActionResult> CreateStore([FromBody] StoreRequest storeRequest)
         {
             if (!ModelState.IsValid)
@@ -62,10 +62,10 @@ namespace TalentOnboardingBackend.Controllers
 
         //PUT edit store
         [HttpPut("/EditStore")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(StoreViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Produces(typeof(Store))]
+        [Produces("application/json")]
         public async Task<IActionResult> EditStore(int id, [FromBody] EditStoreRequest storeRequest)
         {
             if (!ModelState.IsValid || storeRequest == null)
@@ -82,15 +82,14 @@ namespace TalentOnboardingBackend.Controllers
 
         //DELETE store
         [HttpDelete("/DeleteStore")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Produces(typeof(Store))]
         public async Task<IActionResult> DeleteStore(int id)
         {
             if (_context.Stores == null)
             {
-                throw new Exception("No Stores found");
+                throw new Exception("No Stores present !");
             }
             await _storeService.DeleteStore(id);
             return Ok("Store deleted successfully !");
